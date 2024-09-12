@@ -52,21 +52,31 @@ class _HomeState extends State<Home> {
       body: Center(
         child :Column(
           children: [
-            FutureBuilder(
-              future: largeTodosLoader(), 
-              builder: (context, snapshot) {
-                return
-                snapshot.hasData? 
-                  ListView.builder(
-                  itemCount: snapshot.data!.length,
-                  itemBuilder: (context, index){
-                    return Card(
-                      child: Text(snapshot.data![index].title),
-                    );
-                  }
-                )
-                : const CircularProgressIndicator();
-              },
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.6,
+              width: MediaQuery.of(context).size.width,
+              child: FutureBuilder(
+                future: largeTodosLoader(), 
+                builder: (context, snapshot) {
+                  return
+                  snapshot.hasData? 
+                    ListView.builder(
+                    itemCount: snapshot.data!.length,
+                    itemBuilder: (context, index){
+                      return Card(
+                        child: Text(snapshot.data![index].title),
+                      );
+                    }
+                  )
+                  : const CircularProgressIndicator();
+                },
+              ),
+            ),
+            ElevatedButton(
+              onPressed: (){
+                testButtonPressed();
+              }, 
+              child: const Text("Test")
             )
           ],
         )
@@ -75,13 +85,16 @@ class _HomeState extends State<Home> {
   }
 
 Future<List<LargeTodo>> largeTodosLoader()async{
-  Future<List<LargeTodo>> largeTodoes = handler.queryLargeTodo(id);
+  List<LargeTodo> largeTodoes = await handler.queryLargeTodo(id);
   print("랄랄라");
-  print(largeTodoes);
+  print(largeTodoes[0].title);
   return largeTodoes;
 }
 
-
+  testButtonPressed()async{
+    List<LargeTodo> largeTodoes = await handler.queryLargeTodo(id);
+    print(largeTodoes[0].title);
+  }
 
 
 }//End

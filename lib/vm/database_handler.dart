@@ -180,6 +180,10 @@ class DatabaseHandler{
             WHERE id = ?
           """,[id]
         );
+        if (queryResult[0]['stTime'] == null){
+          print('야호');
+        }
+        print(queryResult[0]['stTime']);      
     List<LargeTodo> result = queryResult.map((e) => LargeTodo.fromMap(e),).toList();
     return result;
   }

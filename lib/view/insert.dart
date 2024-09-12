@@ -60,118 +60,120 @@ class _InsertState extends State<Insert> {
           },
         )
       ),
-      body: Center(
-        child: Column(
-          children: [
-            SizedBox(
-              height: 600,
-              width: MediaQuery.of(context).size.width,
-              child: ListView.builder(
-                itemCount: smallTodoList.length,
-                itemBuilder: (context, index) {
-                  return GestureDetector(
-                    onTap: () {
-                      listTabbed();
-                    },
-                    child: Card(
-                      child: Row(
-                        children: [
-                          Checkbox(
-                            value: smallTodoList[index].checked, 
-                            onChanged: (value){
-                              smallTodoList[index].checked == value;
-                              setState(() {});
-                            }
-                          ),
-                          Text(
-                            smallTodoList[index].title
-                          ),
-                          TextButton(
-                            onPressed: (){
-                              xButtonPressed();
-                            }, 
-                            child: const Text("X", style: TextStyle(color: Colors.red),)
-                          )
-                        ],
+      body: SingleChildScrollView(
+        child: Center(
+          child: Column(
+            children: [
+              SizedBox(
+                height: 600,
+                width: MediaQuery.of(context).size.width,
+                child: ListView.builder(
+                  itemCount: smallTodoList.length,
+                  itemBuilder: (context, index) {
+                    return GestureDetector(
+                      onTap: () {
+                        listTabbed();
+                      },
+                      child: Card(
+                        child: Row(
+                          children: [
+                            Checkbox(
+                              value: smallTodoList[index].checked, 
+                              onChanged: (value){
+                                smallTodoList[index].checked == value;
+                                setState(() {});
+                              }
+                            ),
+                            Text(
+                              smallTodoList[index].title
+                            ),
+                            TextButton(
+                              onPressed: (){
+                                xButtonPressed();
+                              }, 
+                              child: const Text("X", style: TextStyle(color: Colors.red),)
+                            )
+                          ],
+                        ),
                       ),
-                    ),
-                  );
-                },
+                    );
+                  },
+                ),
               ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                IconButton(
-                  onPressed: (){
-                    upButtonPressed();
-                  }, 
-                  icon: Icon(Icons.arrow_upward)
-                ),
-                IconButton(
-                  onPressed: (){
-                    downButtonPressed();
-                  }, 
-                  icon: Icon(Icons.arrow_downward)
-                ),
-                IconButton(
-                  onPressed: (){
-                    editButtonPressed();
-                  }, 
-                  icon: Icon(Icons.edit)
-                ),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                IconButton(
-                  onPressed: (){
-                    timeButtonPressed();
-                  }, 
-                  icon: Icon(Icons.more_time)
-                ),
-                IconButton(
-                  onPressed: (){
-                    deleteButtonPressed();
-                  }, 
-                  icon: Icon(
-                    Icons.delete,
-                    color: Colors.red,
-                  )
-                ),
-                IconButton(
-                  onPressed: (){
-                    returnButtonPressed();
-                  }, 
-                  icon: Icon(Icons.subdirectory_arrow_left_sharp)
-                ),
-              ],
-            ),
-            SizedBox(
-              width: MediaQuery.of(context).size.width-16,
-              child: Row(
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  SizedBox(
-                    width: 350,
-                    child: TextField(
-                      controller: smallTitleController,
-                      decoration: InputDecoration(
-                    
-                        hoverColor: Colors.white
-                      ),
-                    ),
+                  IconButton(
+                    onPressed: (){
+                      upButtonPressed();
+                    }, 
+                    icon: Icon(Icons.arrow_upward)
                   ),
                   IconButton(
                     onPressed: (){
-                      addButtonPressed();
+                      downButtonPressed();
                     }, 
-                    icon: Icon(Icons.add)
+                    icon: Icon(Icons.arrow_downward)
+                  ),
+                  IconButton(
+                    onPressed: (){
+                      editButtonPressed();
+                    }, 
+                    icon: Icon(Icons.edit)
                   ),
                 ],
               ),
-            )
-          ],
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  IconButton(
+                    onPressed: (){
+                      timeButtonPressed();
+                    }, 
+                    icon: Icon(Icons.more_time)
+                  ),
+                  IconButton(
+                    onPressed: (){
+                      deleteButtonPressed();
+                    }, 
+                    icon: Icon(
+                      Icons.delete,
+                      color: Colors.red,
+                    )
+                  ),
+                  IconButton(
+                    onPressed: (){
+                      returnButtonPressed();
+                    }, 
+                    icon: Icon(Icons.subdirectory_arrow_left_sharp)
+                  ),
+                ],
+              ),
+              SizedBox(
+                width: MediaQuery.of(context).size.width-16,
+                child: Row(
+                  children: [
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width - 66,
+                      child: TextField(
+                        controller: smallTitleController,
+                        decoration: InputDecoration(
+                      
+                          hoverColor: Colors.white
+                        ),
+                      ),
+                    ),
+                    IconButton(
+                      onPressed: (){
+                        addButtonPressed();
+                      }, 
+                      icon: Icon(Icons.add)
+                    ),
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

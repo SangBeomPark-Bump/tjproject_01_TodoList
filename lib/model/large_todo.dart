@@ -27,10 +27,10 @@ class LargeTodo{
     id = res['id'],
     title = res['title'],
     checked = res['checked'] == 1,
-    editTime =  DateTime.parse(res['stTime']),
-    stTime = res['stTime'] != null ? DateTime.parse(res['stTime']) : null,
-    fnTime = res['fnTime'] != null ? DateTime.parse(res['fnTime']) : null,
-    rmTime = res['rmTime'] != null ? DateTime.parse(res['rmTime']) : null
+    editTime =  DateTime.parse(res['editTime']),
+    stTime = res['stTime'] != 'null' ? DateTime.parse(res['stTime']) : null,
+    fnTime = res['fnTime'] != 'null' ? DateTime.parse(res['fnTime']) : null,
+    rmTime = res['rmTime'] != 'null' ? DateTime.parse(res['rmTime']) : null
     ;
 
 }
