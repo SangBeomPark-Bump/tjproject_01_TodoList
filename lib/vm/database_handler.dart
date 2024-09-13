@@ -180,13 +180,55 @@ class DatabaseHandler{
             WHERE id = ?
           """,[id]
         );
-        if (queryResult[0]['stTime'] == null){
-          print('야호');
-        }
-        print(queryResult[0]['stTime']);      
     List<LargeTodo> result = queryResult.map((e) => LargeTodo.fromMap(e),).toList();
     return result;
   }
+
+  Future<int>queryLargeTodoInsertSeq()async{
+    final Database db = await initalizeDB();
+    final List<Map<String, Object?>> queryResult =
+        await db.rawQuery(
+          """
+            SELECT max(seq) as mseq
+            FROM largeTodo
+          """,
+        );
+    int reslut = queryResult[0]['mseq']  != null
+    ? queryResult[0]['mseq'] as int 
+    :0;
+    return (reslut);
+  }
+
+  Future<List<LargeTodo>> queryLargeTodoBySeq(int seq)async{
+    final Database db = await initalizeDB();
+    final List<Map<String, Object?>> queryResult =
+        await db.rawQuery(
+          """
+            SELECT * 
+            FROM largeTodo
+            WHERE seq = ?
+          """,[seq]
+        );
+    List<LargeTodo> result = queryResult.map((e) => LargeTodo.fromMap(e),).toList();
+    return result;
+  }
+
+  Future<List<SmallTodo>> querySmallTodoByLargeTodoSeq(int largeTodoSeq)async{
+    final Database db = await initalizeDB();
+    final List<Map<String, Object?>> queryResult =
+        await db.rawQuery(
+          """
+            SELECT * 
+            FROM smallTodo
+            WHERE largeTodoSeq = ?
+          """,[largeTodoSeq]
+        );
+      print(queryResult);
+    List<SmallTodo> result = queryResult.map((e) => SmallTodo.fromMap(e),).toList();
+    return result;
+  }
+
+
 
   // Future<List<LargeTodo>> queryResInfoBySeq(int seq)async{
   //   final Database db = await initalizeDB();

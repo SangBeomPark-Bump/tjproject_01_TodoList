@@ -37,10 +37,10 @@ class _InsertState extends State<Insert> {
     super.initState();
     handler = DatabaseHandler();
     id = (box.read('id')) ?? '';
+    largeTodoSeq = box.read('largeSeq');
+    print(largeTodoSeq);
     largeTitleController = TextEditingController();
     smallTitleController = TextEditingController();
-
-    largeTodoSeq = 0;
     hierarchy = 0;
     smallTodoList = [];
   }
@@ -220,6 +220,7 @@ class _InsertState extends State<Insert> {
 
   addButtonPressed(){
     if (smallTitleController.text.trim().isNotEmpty){
+      print(largeTodoSeq);
       SmallTodo _new = SmallTodo(
         hierarchy: hierarchy, 
         id: id, 

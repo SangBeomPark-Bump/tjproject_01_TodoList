@@ -5,6 +5,7 @@ import 'package:todolist_app_02/model/accounts.dart';
 import 'package:todolist_app_02/model/large_todo.dart';
 import 'package:todolist_app_02/view/insert.dart';
 import 'package:todolist_app_02/vm/database_handler.dart';
+import 'package:todolist_app_02/view/update.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -22,15 +23,21 @@ class _HomeState extends State<Home> {
   late List<Accounts> accounts;
   late List largeTodos;
 
+  int? insertSeq;
+
     @override
   void initState() {
     super.initState();
     handler = DatabaseHandler();
     id = (box.read('id')) ?? '';
-    print(id);
+    insertSeqLoader();
   }
 
-
+  insertSeqLoader()async{
+    insertSeq = await handler.queryLargeTodoInsertSeq() +1;
+    box.write('largeSeq', insertSeq);
+    print(insertSeq);
+  }
 
 
   @override
@@ -41,6 +48,7 @@ class _HomeState extends State<Home> {
         actions: [
           IconButton(
             onPressed: (){
+              insertSeqLoader();
               Get.to(() => const Insert())!.then((value) {
                 setState(() {});
               },);
@@ -63,8 +71,13 @@ class _HomeState extends State<Home> {
                     ListView.builder(
                     itemCount: snapshot.data!.length,
                     itemBuilder: (context, index){
-                      return Card(
-                        child: Text(snapshot.data![index].title),
+                      return GestureDetector(
+                        onTap: (){
+                          cardTabbed(index, snapshot.data!);
+                        },
+                        child: Card(
+                          child: Text(snapshot.data![index].title),
+                        ),
                       );
                     }
                   )
@@ -86,8 +99,6 @@ class _HomeState extends State<Home> {
 
 Future<List<LargeTodo>> largeTodosLoader()async{
   List<LargeTodo> largeTodoes = await handler.queryLargeTodo(id);
-  print("랄랄라");
-  print(largeTodoes[0].title);
   return largeTodoes;
 }
 
@@ -96,5 +107,10 @@ Future<List<LargeTodo>> largeTodosLoader()async{
     print(largeTodoes[0].title);
   }
 
+
+  cardTabbed(int index, List<LargeTodo> largeTodoList){
+    box.write('largeSeq', largeTodoList[index].seq);
+    Get.to(() => const Update());
+  }
 
 }//End
