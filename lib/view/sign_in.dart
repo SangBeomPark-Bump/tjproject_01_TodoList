@@ -71,6 +71,7 @@ class _SignInState extends State<SignIn> {
               width: 300,
               child: TextField(
                 controller: passwordController,
+                obscureText: true,
                 decoration: const InputDecoration(
                   label:  Text('password')
                 ),
@@ -87,6 +88,8 @@ class _SignInState extends State<SignIn> {
                 ),
                 ElevatedButton(
                   onPressed: (){
+                    idController.clear();
+                    passwordController.clear();
                     Get.to( () =>const SignUp());
                   }, 
                   child: const Text('회원 가입')
@@ -135,11 +138,10 @@ fetchUser(String id, String password)async{
       barrierDismissible: false,
       actions: [
         TextButton(
-          onPressed: () => Get.off(() => const Home())!.then((value) {
-            idController.clear();
-            passwordController.clear();
-            setState(() {});
-          },), 
+          onPressed: () {
+            Get.back();
+              Get.off(() => const Home());
+          }, 
           child: const Text('확인')
         ),
       ]
@@ -147,7 +149,6 @@ fetchUser(String id, String password)async{
   }
 
 testButtonPressed(){
-
 }
 
 

@@ -77,9 +77,9 @@ class DatabaseHandler{
         largeTodo.title, 
         largeTodo.checked ? 1 : 0, 
         largeTodo.editTime.toString(),
-        largeTodo.stTime == null ? largeTodo.stTime.toString(): null,
-        largeTodo.fnTime == null ? largeTodo.fnTime.toString(): null,
-        largeTodo.rmTime == null ? largeTodo.rmTime.toString(): null,
+        largeTodo.stTime.toString(),
+        largeTodo.fnTime.toString(),
+        largeTodo.rmTime.toString(),
       ]);
     return result;
   }
@@ -171,6 +171,7 @@ class DatabaseHandler{
 
 
   Future<List<LargeTodo>> queryLargeTodo(String id)async{
+    String now = DateTime.now().toString();
     final Database db = await initalizeDB();
     final List<Map<String, Object?>> queryResult =
         await db.rawQuery(
@@ -178,8 +179,14 @@ class DatabaseHandler{
             SELECT * 
             FROM largeTodo
             WHERE id = ?
-          """,[id]
+            AND rmTime == 'null'
+            AND strftime('%Y-%m-%d', editTime) == strftime('%Y-%m-%d', ? )
+            ORDER BY hierarchy
+          """,[id, now]
         );
+    // for (Map<String, Object?> i in queryResult){
+    //   print('쿼리 hierarchy : ${i['hierarchy']}');
+    // }
     List<LargeTodo> result = queryResult.map((e) => LargeTodo.fromMap(e),).toList();
     return result;
   }
@@ -213,6 +220,59 @@ class DatabaseHandler{
     return result;
   }
 
+
+  Future<int> updateLargeTodo(LargeTodo largeTodo)async{
+    int result = 0;
+    print("작동되나 확인");
+    final Database db = await initalizeDB();
+    result = await db.rawUpdate(
+      """
+        update largeTodo
+        set hierarchy = ?, id = ?, title = ?, checked = ?, editTime = ?, stTime = ?, fnTime = ?, rmTime = ?
+        where seq = ?
+      """,
+      [
+        largeTodo.hierarchy,
+        largeTodo.id, 
+        largeTodo.title, 
+        largeTodo.checked ? 1 : 0, 
+        largeTodo.editTime.toString(),
+        largeTodo.stTime.toString(),
+        largeTodo.fnTime.toString(),
+        largeTodo.rmTime.toString(),
+        largeTodo.seq, 
+      ]);
+    print("확인2, $result");
+    return result;
+  }
+
+
+  Future<int> updateSmallTodo(SmallTodo smallTodo)async{
+    int result = 0;
+    final Database db = await initalizeDB();
+    result = await db.rawUpdate(
+      """
+        update smallTodo
+        set hierarchy = ?, id = ?, largeTodoSeq = ? , title = ?, checked = ?, rmtime = ?
+        where seq = ?
+      """,
+      [
+        smallTodo.hierarchy,
+        smallTodo.id, 
+        smallTodo.largeTodoSeq,
+        smallTodo.title, 
+        smallTodo.checked ? 1 : 0, 
+        smallTodo.rmTime.toString(),
+        smallTodo.seq, 
+      ]);
+      print(result);
+    return result;
+  }
+
+
+
+
+
   Future<List<SmallTodo>> querySmallTodoByLargeTodoSeq(int largeTodoSeq)async{
     final Database db = await initalizeDB();
     final List<Map<String, Object?>> queryResult =
@@ -221,12 +281,18 @@ class DatabaseHandler{
             SELECT * 
             FROM smallTodo
             WHERE largeTodoSeq = ?
+            AND rmtime == 'null'
+            ORDER BY hierarchy
           """,[largeTodoSeq]
         );
       print(queryResult);
     List<SmallTodo> result = queryResult.map((e) => SmallTodo.fromMap(e),).toList();
     return result;
   }
+
+
+
+
 
 
 
@@ -264,24 +330,6 @@ class DatabaseHandler{
 
 
 
-  // Future<int> updateResInfo(ResInfo resInfo)async{
-  //   int result = 0;
-  //   final Database db = await initalizeDB();
-  //   result = await db.rawUpdate(
-  //     """
-  //       update resInfo
-  //       set name = ?, phone = ?, comment = ?, privates = ?
-  //       where seq = ?
-  //     """,
-  //     [
-  //       resInfo.name, 
-  //       resInfo.phone, 
-  //       resInfo.comment,
-  //       resInfo.privates,
-  //       resInfo.seq, 
-  //     ]);
-  //   return result;
-  // }
 
   // Future<int> updateResInfoAll(ResInfo resInfo)async{
   //   int result = 0;

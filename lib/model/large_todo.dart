@@ -1,16 +1,17 @@
 class LargeTodo{
 
   int? seq;
-  final int hierarchy;
+  int hierarchy;
   final String id;
   final String title;
-  final bool checked;
+  bool checked;
   final DateTime editTime;
   DateTime? stTime;
   DateTime? fnTime;
   DateTime? rmTime;
 
   LargeTodo({
+    this.seq,
     required this.hierarchy,
     required this.id,
     required this.title,
@@ -28,9 +29,13 @@ class LargeTodo{
     title = res['title'],
     checked = res['checked'] == 1,
     editTime =  DateTime.parse(res['editTime']),
-    stTime = res['stTime'] != 'null' ? DateTime.parse(res['stTime']) : null,
-    fnTime = res['fnTime'] != 'null' ? DateTime.parse(res['fnTime']) : null,
-    rmTime = res['rmTime'] != 'null' ? DateTime.parse(res['rmTime']) : null
+    stTime = (res['stTime'] == 'null' )   ? null :  DateTime.parse(res['stTime']) ,
+    fnTime = (res['fnTime'] == 'null' )  ? null :  DateTime.parse(res['fnTime']) ,
+    rmTime = res['rmTime'] == 'null' ? null :  DateTime.parse(res['rmTime'])
     ;
+
+    changeHie(int newHie){
+      hierarchy = newHie;
+    }
 
 }

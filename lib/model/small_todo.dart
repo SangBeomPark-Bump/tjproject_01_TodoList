@@ -1,11 +1,13 @@
 class SmallTodo{
   int? seq;
-  final int hierarchy;
+  int hierarchy;
   final String id;
   final int largeTodoSeq;
-  final String title;
-  final bool checked;
+  String title;
+  bool checked;
   DateTime? rmTime;
+
+  bool? insert;
 
   SmallTodo({
     required this.hierarchy,
@@ -13,6 +15,7 @@ class SmallTodo{
     required this.largeTodoSeq,
     required this.title,
     required this.checked,
+    this.insert
   });
 
   SmallTodo.fromMap(Map<String, dynamic> res)
@@ -22,6 +25,14 @@ class SmallTodo{
     largeTodoSeq = res['largeTodoSeq'],
     title = res['title'],
     checked = res['checked'] == 1,
-    rmTime = res['rmTime'] != null ? DateTime.parse(res['rmTime']) : null
+    rmTime = res['rmTime'] != null ? DateTime.parse(res['rmTime']) : null,
+    insert = false
     ;
+
+    changeHie(int newHie){
+      hierarchy = newHie;
+    }
+
+
+
 }
